@@ -1,0 +1,319 @@
+<template>
+  <el-container id="app">
+    <el-header
+      style="
+        background: linear-gradient(135deg, #8f75da 0, #727cf5 60%);
+        height: 12vw;
+        font-size: 3vw;
+      "
+      ><h1 @click="toIndex" style="color: white">桌游发牌官</h1>
+    </el-header>
+    <el-main>
+      <el-row :gutter="40">
+        <el-col :span="6" v-for="i of playerCount" :key="i">
+          <el-card :style="number == i ? 'background:pink' : ''">
+            <h1 @click="setDown(i)">座位号：{{ i }}</h1>
+            <!--                        <h1>姓名：{{ players[i] ? players[i].name : "" }}</h1>-->
+          </el-card>
+        </el-col>
+      </el-row>
+    </el-main>
+    <el-row :gutter="40" style="margin-top: 5%">
+      <el-col :span="8">
+        <el-button type="info" round @click="enterNight">进入黑夜 </el-button>
+      </el-col>
+      <el-col :span="8">
+        <el-button type="info" round @click="getResult">昨夜信息</el-button>
+      </el-col>
+      <el-col :span="8">
+        <el-button type="info" round @click="startGame">重新发牌 </el-button>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="40" style="margin-top: 5%">
+      <el-col :span="6">
+        <el-button type="danger" round @click="werewolfAction"
+          >狼人杀人</el-button
+        >
+      </el-col>
+      <el-col :span="6">
+        <el-button type="warning" round @click="witchAction"
+          >女巫用药</el-button
+        >
+      </el-col>
+      <el-col :span="6">
+        <el-button type="success" round @click="seerAction">预言查验</el-button>
+      </el-col>
+      <el-col :span="6">
+        <el-button type="primary" round @click="saviorAction"
+          >守卫守人</el-button
+        >
+      </el-col>
+    </el-row>
+  </el-container>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  created() {
+    this.player_count().then((res) => {
+      console.log(res);
+      this.playerCount = res.data;
+    });
+  },
+  methods: {
+    toIndex() {
+      window.location.href = "/";
+    },
+    player_count() {
+      return axios.get("http://123.56.19.49:5000/player_count");
+    },
+    action(action_number) {
+      return axios.post("http://123.56.19.49:5000/action", {
+        number: localStorage.getItem("number"),
+        action: action_number,
+        role: localStorage.getItem("role"),
+      });
+    },
+    getResult() {
+      if (this.number != 1) {
+        this.$msgbox("这种事你干不了！", "达咩");
+        return;
+      }
+      this.result().then((res) => {
+        this.$msgbox(res.data, "昨夜信息");
+      });
+    },
+    result() {
+      return axios.get("http://123.56.19.49:5000/result");
+    },
+    get_role(number) {
+      return axios.post("http://123.56.19.49:5000/role", {
+        number: number,
+      });
+    },
+    status_url() {
+      return axios.get("http://123.56.19.49:5000/status");
+    },
+    startGame() {
+      if (this.number != 1) {
+        this.status_url().then((res) => {
+          if (res.data != "init" || res.data != "werewolf") {
+            this.$msgbox("这种事你干不了！", "达咩");
+            return;
+          } else {
+            localStorage.clear();
+            window.location.href = "/desktop";
+            return;
+          }
+        });
+      } else {
+        axios.get("http://123.56.19.49:5000/start_game").then((res) => {
+          localStorage.clear();
+          window.location.href = "/desktop";
+        });
+      }
+    },
+
+    //狼人杀人
+    werewolfAction() {
+      if (this.role != "werewolf") {
+        this.$msgbox("这种事你干不了！", "达咩");
+        return;
+      }
+      //    输入要杀的号码
+      this.$prompt("请输入猎杀的号码", "狼人", {
+        inputType: "number",
+        inputValidator: this.numberValidator,
+      }).then((value) => {
+        this.action(value.value).then((res) => {
+          if (res.data == "error") {
+            this.$msgbox("还没轮到你，别着急", "达咩");
+            return;
+          }
+        });
+      });
+    },
+    numberValidator(value) {
+      console.log(value);
+      if (value) {
+        if (
+          parseInt(value) < 1 ||
+          parseInt(value) > parseInt(this.playerCount)
+        ) {
+          return "你的太大了或者太小了";
+        }
+      } else {
+        return "输入不能为空";
+      }
+    },
+    listenStatusChange() {
+      this.status_url().then((res) => {
+        if (this.status != res.data) {
+          this.status = res.data;
+          if (this.status == "witch") {
+            new Audio(
+              "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=狼人请闭眼，女巫请睁眼"
+            ).play();
+          } else if (this.status == "seer") {
+            new Audio(
+              "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=女巫请闭眼，预言家请睁眼"
+            ).play();
+          } else if (this.status == "init") {
+            new Audio(
+              "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=预言家请闭眼，想要竞选警长的玩家请闭眼举手。5,4,3,2,1。天亮了。"
+            ).play();
+            clearInterval(this.statusInterval);
+          }
+        }
+      });
+    },
+    enterNight() {
+      if (this.number != 1) {
+        this.$msgbox("这种事你干不了！", "达咩");
+        return;
+      }
+      new Audio(
+        "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=天黑请闭眼，狼人请睁眼"
+      ).play();
+      this.status = "werewolf";
+      this.statusInterval = setInterval(this.listenStatusChange, 3000);
+    },
+    witchAction() {
+      if (this.role != "witch") {
+        this.$msgbox("这种事你干不了！", "达咩");
+        return;
+      }
+      this.result().then((res) => {
+        this.$confirm("昨天晚上：" + res.data + "。你要使用解药吗", "女巫")
+          .then((value) => {
+            this.action(666).then((res) => {
+              if (res.data == "error") {
+                this.$msgbox("还没轮到你，别着急", "达咩");
+                return;
+              }
+            });
+          })
+          .catch((res) => {
+            this.$prompt("输入你使用毒药的座位号，不使用则点击取消", "女巫", {
+              inputValidator: this.numberValidator,
+              inputType: "number",
+            })
+              .then((value) => {
+                this.action(value.value).then((res) => {});
+              })
+              .catch((res) => {
+                this.action(999).then((res) => {});
+              });
+          });
+      });
+    },
+    seerAction() {
+      if (this.role != "seer") {
+        this.$msgbox("这种事你干不了！", "达咩");
+        return;
+      }
+      this.$prompt("输入你要查验的玩家座位号", "预言家", {
+        inputType: "number",
+        inputValidator: this.numberValidator,
+        showCancelButton: false,
+      }).then((value) => {
+        this.action(value.value).then((res) => {
+          if (res.data == "error") {
+            this.$msgbox("还没轮到你，别着急", "达咩");
+            return;
+          }
+          this.$msgbox(res.data, "结果").then((res) => {});
+        });
+      });
+    },
+    saviorAction() {
+      // new Audio(
+      //     "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=预言家请闭眼，守卫请睁眼"
+      // ).play();
+    },
+
+    setDown(desk_index) {
+      this.number = localStorage.getItem("number");
+      this.role = localStorage.getItem("role");
+      console.log(this.number);
+      if (this.number) {
+        if (this.number != desk_index) {
+          this.$msgbox("不可以查看别人的身份", "达咩");
+          return;
+        }
+        this.$msgbox("你的身份是：" + this.role, "结果");
+      } else {
+        this.$confirm("确定要坐在：" + desk_index + " 号位置吗", "确认").then(
+          (res) => {
+            this.get_role(desk_index).then((res) => {
+              localStorage.setItem("number", desk_index);
+              localStorage.setItem("role", res.data);
+              this.number = localStorage.getItem("number");
+              this.role = localStorage.getItem("role");
+              this.$msgbox("你的身份是：" + this.role, "结果");
+            });
+          }
+        );
+      }
+    },
+  },
+  data() {
+    return {
+      statusInterval: null,
+      status: "init",
+      number: localStorage.getItem("number"),
+      role: localStorage.getItem("role"),
+      form: {},
+      playerCount: 1,
+      players: {
+        1: { name: "徐开元", identity: "werewolf" },
+        2: { name: "冯翀", identity: "villager" },
+      },
+    };
+  },
+};
+</script>
+
+<style>
+p {
+  font-size: 2.5vw;
+}
+span {
+  font-size: 3.5vw;
+}
+.el-message-box {
+  width: 60% !important;
+}
+
+.el-input__inner {
+  font-size: 5vw;
+  height: 8vw;
+  text-align: center;
+  width: 50%;
+}
+.bottom-text {
+  padding: 5vw;
+}
+
+.el-button {
+  font-size: 3vw;
+}
+
+.el-card {
+  /* width:60vw; */
+  margin-top: 5vw;
+  /* margin-left:15vw; */
+}
+
+.image {
+  /* width:60vw; */
+}
+
+#app {
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+}
+</style>
