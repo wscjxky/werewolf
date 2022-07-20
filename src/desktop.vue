@@ -11,25 +11,34 @@
     <el-main>
       <el-row :gutter="40">
         <el-col :span="6" v-for="i of playerCount" :key="i">
-          <el-card :style="number == i ? 'background:pink' : ''">
+          <el-card :style="i == number ? 'background:pink' : ''">
             <h1 @click="setDown(i)">座位号：{{ i }}</h1>
             <!--                        <h1>姓名：{{ players[i] ? players[i].name : "" }}</h1>-->
           </el-card>
         </el-col>
       </el-row>
     </el-main>
-    <el-row :gutter="40" style="margin-top: 5%">
+    <el-row :gutter="40" style="margin-top: 5%" v-if="number == 1">
       <el-col :span="8">
-        <el-button type="info" round @click="enterNight">进入黑夜 </el-button>
+        <el-button type="info" round @click="enterNight">进入黑夜</el-button>
       </el-col>
       <el-col :span="8">
         <el-button type="info" round @click="getResult">昨夜信息</el-button>
       </el-col>
-      <el-col :span="8">
-        <el-button type="info" round @click="startGame">重新发牌 </el-button>
-      </el-col>
+
+      <!-- <el-col :span="8">
+        <el-button type="info" round @click="reSit">换个座位</el-button>
+      </el-col> -->
     </el-row>
 
+    <el-row style="margin-top: 20px">
+      <el-col :span="12">
+        <el-button type="info" round @click="startGame">重新发牌 </el-button>
+      </el-col>
+      <el-col :span="12">
+        <el-button type="info" round @click="checkSit">空闲座位 </el-button>
+      </el-col>
+    </el-row>
     <el-row :gutter="40" style="margin-top: 5%">
       <el-col :span="6">
         <el-button type="danger" round @click="werewolfAction"
@@ -64,14 +73,23 @@ export default {
     });
   },
   methods: {
+    checkSit() {
+      this.get_role_players().then((res) => {
+        console.log(res);
+        this.$msgbox(res.data);
+      });
+    },
     toIndex() {
       window.location.href = "/";
     },
+    get_role_players() {
+      return axios.get("http://localhost:5000/room_players");
+    },
     player_count() {
-      return axios.get("http://123.56.19.49:5000/player_count");
+      return axios.get("http://localhost:5000/player_count");
     },
     action(action_number) {
-      return axios.post("http://123.56.19.49:5000/action", {
+      return axios.post("http://localhost:5000/action", {
         number: localStorage.getItem("number"),
         action: action_number,
         role: localStorage.getItem("role"),
@@ -79,7 +97,7 @@ export default {
     },
     getResult() {
       if (this.number != 1) {
-        this.$msgbox("这种事你干不了！", "达咩");
+        this.$msgbox("这种事你干不了！", "だめ");
         return;
       }
       this.result().then((res) => {
@@ -87,21 +105,26 @@ export default {
       });
     },
     result() {
-      return axios.get("http://123.56.19.49:5000/result");
+      return axios.get("http://localhost:5000/result");
     },
-    get_role(number) {
-      return axios.post("http://123.56.19.49:5000/role", {
+    get_role(number, check) {
+      return axios.post("http://localhost:5000/role", {
         number: number,
+        check: check,
       });
     },
     status_url() {
-      return axios.get("http://123.56.19.49:5000/status");
+      return axios.get("http://localhost:5000/status");
+    },
+    reSit() {
+      localStorage.clear();
+      window.location.href = "/desktop";
     },
     startGame() {
       if (this.number != 1) {
         this.status_url().then((res) => {
           if (res.data != "init" || res.data != "werewolf") {
-            this.$msgbox("这种事你干不了！", "达咩");
+            this.$msgbox("这种事你干不了！", "だめ");
             return;
           } else {
             localStorage.clear();
@@ -110,8 +133,9 @@ export default {
           }
         });
       } else {
-        axios.get("http://123.56.19.49:5000/start_game").then((res) => {
-          localStorage.clear();
+        axios.get("http://localhost:5000/start_game").then((res) => {
+          // localStorage.clear();
+          localStorage.setItem("role", null);
           window.location.href = "/desktop";
         });
       }
@@ -120,7 +144,7 @@ export default {
     //狼人杀人
     werewolfAction() {
       if (this.role != "werewolf") {
-        this.$msgbox("这种事你干不了！", "达咩");
+        this.$msgbox("还没到你呢，别急！", "だめ");
         return;
       }
       //    输入要杀的号码
@@ -130,7 +154,7 @@ export default {
       }).then((value) => {
         this.action(value.value).then((res) => {
           if (res.data == "error") {
-            this.$msgbox("还没轮到你，别着急", "达咩");
+            this.$msgbox("还没轮到你，别着急", "だめ");
             return;
           }
         });
@@ -172,7 +196,7 @@ export default {
     },
     enterNight() {
       if (this.number != 1) {
-        this.$msgbox("这种事你干不了！", "达咩");
+        this.$msgbox("这种事你干不了！", "だめ");
         return;
       }
       new Audio(
@@ -183,7 +207,7 @@ export default {
     },
     witchAction() {
       if (this.role != "witch") {
-        this.$msgbox("这种事你干不了！", "达咩");
+        this.$msgbox("还没到你呢，别急！", "だめ");
         return;
       }
       this.result().then((res) => {
@@ -191,7 +215,7 @@ export default {
           .then((value) => {
             this.action(666).then((res) => {
               if (res.data == "error") {
-                this.$msgbox("还没轮到你，别着急", "达咩");
+                this.$msgbox("还没轮到你，别着急", "だめ");
                 return;
               }
             });
@@ -212,7 +236,7 @@ export default {
     },
     seerAction() {
       if (this.role != "seer") {
-        this.$msgbox("这种事你干不了！", "达咩");
+        this.$msgbox("还没到你呢，别急！", "だめ");
         return;
       }
       this.$prompt("输入你要查验的玩家座位号", "预言家", {
@@ -222,7 +246,7 @@ export default {
       }).then((value) => {
         this.action(value.value).then((res) => {
           if (res.data == "error") {
-            this.$msgbox("还没轮到你，别着急", "达咩");
+            this.$msgbox("还没轮到你，别着急", "だめ");
             return;
           }
           this.$msgbox(res.data, "结果").then((res) => {});
@@ -241,27 +265,34 @@ export default {
       console.log(this.number);
       if (this.number) {
         if (this.number != desk_index) {
-          this.$msgbox("不可以查看别人的身份", "达咩");
+          this.$msgbox("不可以查看别人的身份", "だめ");
           return;
         }
-        this.$msgbox("你的身份是：" + this.role, "结果");
+        this.get_role(desk_index, "no_check").then((res) => {
+          this.$msgbox("你的身份是：" + res.data, "结果");
+        });
       } else {
-        this.$confirm("确定要坐在：" + desk_index + " 号位置吗", "确认").then(
-          (res) => {
-            this.get_role(desk_index).then((res) => {
+        this.$confirm("确定要坐在：" + desk_index + " 号位置吗", "确认")
+          .then((res) => {
+            this.get_role(desk_index,"check").then((res) => {
+              if (res.data == "haven") {
+                this.$msgbox("位置上已经有人了！请换个座位", "だめ");
+                return;
+              }
               localStorage.setItem("number", desk_index);
               localStorage.setItem("role", res.data);
               this.number = localStorage.getItem("number");
               this.role = localStorage.getItem("role");
               this.$msgbox("你的身份是：" + this.role, "结果");
             });
-          }
-        );
+          })
+          .catch((res) => {});
       }
     },
   },
   data() {
     return {
+      room_players: [],
       statusInterval: null,
       status: "init",
       number: localStorage.getItem("number"),

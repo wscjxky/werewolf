@@ -10,9 +10,11 @@ CORS(app)
 players = []
 dead_players = []
 status = "init"
-
+room_players = []
 
 # 狼人杀人 werewolf 0
+
+
 def werewolf_action(kill=1):
     global dead_players
     if kill == -1:
@@ -68,11 +70,13 @@ def shuffle_players():
     global players
     global status
     global dead_players
+    global room_players
     for i in range(10):
         random.seed(i * i)
         random.shuffle(players)
     status = "werewolf"
     dead_players = []
+    room_players = []
 
 
 @app.route("/start_game", methods=["POST", "GET"])
@@ -97,12 +101,29 @@ def player_count():
 
 @app.route("/ohgod", methods=["POST", "GET"])
 def ohgod():
-    return Response("player："+str(players) + "status："+status +"dead："+ str(dead_players), status=200)
+    return Response("player："+str(players) + "status："+status + "dead：" + str(dead_players), status=200)
 
 
 @app.route("/role", methods=["POST", "GET"])
 def role():
-    return Response(players[int(request.get_json()["number"]) - 1], status=200)
+    # 保存進入房間的玩家
+    global room_players
+    user_number = int(request.get_json()["number"])
+    check = request.get_json().get('check','check')
+    print(room_players)
+    if user_number in room_players :
+        if request.method=='POST' and check=='check': 
+            return Response('haven',status=200)
+    else:
+        room_players.append(user_number)
+    return Response(players[user_number - 1], status=200)
+
+
+@app.route("/room_players", methods=["POST", "GET"])
+def room_play():
+    global room_players
+
+    return Response(str(set([i for i in range(1,len(players)+1)]).difference(set(room_players))).replace("set", ""))
 
 
 @app.route("/result", methods=["POST", "GET"])

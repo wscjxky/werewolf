@@ -254,7 +254,7 @@ export default {
         type: "warning",
       }).then(() => {
         axios
-          .post("http://123.56.19.49:5000/start_game", this.form)
+          .post("http://localhost:5000/start_game", this.form)
           .then((res) => {
             console.log(res);
             if (res.data == "error") {
