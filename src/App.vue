@@ -172,8 +172,9 @@
           <el-card :body-style="{ padding: '0px' }">
             <el-image
               fit="cover"
-              :src="require('./assets/狼狗.jpg')"
               class="image"
+              :src="require('./assets/狼狗.jpg')"
+
             ></el-image>
             <div class="bottom-text">
               <h1>隐狼 hiddenwolf</h1>
@@ -254,7 +255,7 @@ export default {
         type: "warning",
       }).then(() => {
         axios
-          .post("http://localhost:5000/start_game", this.form)
+          .post("http://39.101.182.237:7778/start_game", this.form)
           .then((res) => {
             console.log(res);
             if (res.data == "error") {

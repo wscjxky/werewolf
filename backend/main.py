@@ -17,7 +17,7 @@ room_players = []
 
 def werewolf_action(kill=1):
     global dead_players
-    if kill == -1:
+    if kill == 0:
         print("狼人不杀人", players)
         return
     else:
@@ -99,8 +99,8 @@ def player_count():
     return Response(str(len(players)), status=200)
 
 
-@app.route("/ohgod", methods=["POST", "GET"])
-def ohgod():
+@app.route("/current_status", methods=["POST", "GET"])
+def current_status():
     return Response("player："+str(players) + "status："+status + "dead：" + str(dead_players), status=200)
 
 
@@ -157,4 +157,4 @@ def action():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=True,port=7778)

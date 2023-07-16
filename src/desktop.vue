@@ -83,13 +83,13 @@ export default {
       window.location.href = "/";
     },
     get_role_players() {
-      return axios.get("http://localhost:5000/room_players");
+      return axios.get("http://39.101.182.237:7778/room_players");
     },
     player_count() {
-      return axios.get("http://localhost:5000/player_count");
+      return axios.get("http://39.101.182.237:7778/player_count");
     },
     action(action_number) {
-      return axios.post("http://localhost:5000/action", {
+      return axios.post("http://39.101.182.237:7778/action", {
         number: localStorage.getItem("number"),
         action: action_number,
         role: localStorage.getItem("role"),
@@ -105,16 +105,16 @@ export default {
       });
     },
     result() {
-      return axios.get("http://localhost:5000/result");
+      return axios.get("http://39.101.182.237:7778/result");
     },
     get_role(number, check) {
-      return axios.post("http://localhost:5000/role", {
+      return axios.post("http://39.101.182.237:7778/role", {
         number: number,
         check: check,
       });
     },
     status_url() {
-      return axios.get("http://localhost:5000/status");
+      return axios.get("http://39.101.182.237:7778/status");
     },
     reSit() {
       localStorage.clear();
@@ -133,7 +133,7 @@ export default {
           }
         });
       } else {
-        axios.get("http://localhost:5000/start_game").then((res) => {
+        axios.get("http://39.101.182.237:7778/start_game").then((res) => {
           // localStorage.clear();
           localStorage.setItem("role", null);
           window.location.href = "/desktop";
@@ -164,7 +164,7 @@ export default {
       console.log(value);
       if (value) {
         if (
-          parseInt(value) < 1 ||
+          parseInt(value) < 0 ||
           parseInt(value) > parseInt(this.playerCount)
         ) {
           return "你的太大了或者太小了";
@@ -179,15 +179,15 @@ export default {
           this.status = res.data;
           if (this.status == "witch") {
             new Audio(
-              "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=狼人请闭眼，女巫请睁眼"
+              "http://39.101.182.237:7777/langren.mp3"
             ).play();
           } else if (this.status == "seer") {
             new Audio(
-              "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=女巫请闭眼，预言家请睁眼"
+              "http://39.101.182.237:7777/nvwu.mp3"
             ).play();
           } else if (this.status == "init") {
             new Audio(
-              "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=预言家请闭眼，想要竞选警长的玩家请闭眼举手。5,4,3,2,1。天亮了。"
+              "http://39.101.182.237:7777/tianliang.mp3"
             ).play();
             clearInterval(this.statusInterval);
           }
@@ -200,8 +200,11 @@ export default {
         return;
       }
       new Audio(
-        "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=天黑请闭眼，狼人请睁眼"
+              "http://39.101.182.237:7777/tianhei.mp3"
       ).play();
+      console.log( new Audio(
+              "http://39.101.182.237:7777/tianhei.mp3"
+      ))
       this.status = "werewolf";
       this.statusInterval = setInterval(this.listenStatusChange, 3000);
     },
