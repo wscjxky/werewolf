@@ -11,14 +11,10 @@
     <el-main>
       <el-row style="margin-top: 2%" :gutter="40">
         <el-col :span="8">
-          <el-button type="success" round @click="enterRoom"
-            >进入房间
-          </el-button>
+          <el-button type="success" round @click="enterRoom">进入房间 </el-button>
         </el-col>
         <el-col :span="8">
-          <el-button type="danger" round @click="startGame"
-            >创建房间
-          </el-button>
+          <el-button type="danger" round @click="startGame">创建房间 </el-button>
         </el-col>
         <el-col :span="8">
           <el-button type="warning" round @click="awalong">瓦隆语音 </el-button>
@@ -52,7 +48,7 @@
             </div>
           </el-card>
         </el-col>
-          <el-col :span="8">
+        <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
               fit="cover"
@@ -68,7 +64,6 @@
       </el-row>
 
       <el-row :gutter="30">
-      
         <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
@@ -82,7 +77,7 @@
             </div>
           </el-card>
         </el-col>
-        
+
         <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
@@ -96,7 +91,7 @@
             </div>
           </el-card>
         </el-col>
-          <el-col :span="8">
+        <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
               fit="cover"
@@ -112,7 +107,7 @@
       </el-row>
 
       <el-row :gutter="30">
-          <el-col :span="8">
+        <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
               fit="cover"
@@ -125,7 +120,7 @@
             </div>
           </el-card>
         </el-col>
-     
+
         <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
@@ -139,7 +134,7 @@
             </div>
           </el-card>
         </el-col>
-          <el-col :span="8">
+        <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
               fit="cover"
@@ -155,7 +150,7 @@
       </el-row>
 
       <el-row :gutter="30">
-          <el-col :span="8">
+        <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
               fit="cover"
@@ -168,13 +163,12 @@
             </div>
           </el-card>
         </el-col>
-          <el-col :span="8">
+        <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
               fit="cover"
               class="image"
               :src="require('./assets/狼狗.jpg')"
-
             ></el-image>
             <div class="bottom-text">
               <h1>隐狼 hiddenwolf</h1>
@@ -182,8 +176,7 @@
             </div>
           </el-card>
         </el-col>
-          </el-col>
-          <el-col :span="8">
+        <el-col :span="8">
           <el-card :body-style="{ padding: '0px' }">
             <el-image
               fit="cover"
@@ -193,6 +186,287 @@
             <div class="bottom-text">
               <h1>丘比特 cupid</h1>
               <el-input type="number" v-model="form.cupid"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/城管.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>城管 cityman</h1>
+              <el-input type="number" v-model="form.cityman"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              class="image"
+              :src="require('./assets/村长.jpg')"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>村长 villagehead</h1>
+              <el-input type="number" v-model="form.villagehead"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/大野狼.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>大野狼 bigwolf</h1>
+              <el-input type="number" v-model="form.bigwolf"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/盗贼.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>盗贼 thief</h1>
+              <el-input type="number" v-model="form.thief"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              class="image"
+              :src="require('./assets/狐狸.jpg')"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>狐狸 fox</h1>
+              <el-input type="number" v-model="form.fox"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/吉普赛狼.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>吉普赛狼 solitudewolf</h1>
+              <el-input type="number" v-model="form.solitudewolf"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/口吃法官.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>口吃法官 shutjudge</h1>
+              <el-input type="number" v-model="form.shutjudge"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              class="image"
+              :src="require('./assets/苦涩的老爷爷.jpg')"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>苦涩爷爷 hardgrandpa</h1>
+              <el-input type="number" v-model="form.hardgrandpa"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/两姐妹.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>两姐妹 sisters</h1>
+              <el-input type="number" v-model="form.sisters"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/女仆.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>女仆 maid</h1>
+              <el-input type="number" v-model="form.maid"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              class="image"
+              :src="require('./assets/三兄弟.jpg')"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>三兄弟 brothers</h1>
+              <el-input type="number" v-model="form.brothers"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/替罪羊.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>替罪羊 scapegoat</h1>
+              <el-input type="number" v-model="form.scapegoat"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/天使.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>天使 angel</h1>
+              <el-input type="number" v-model="form.angel"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              class="image"
+              :src="require('./assets/小女孩.jpg')"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>小女孩 girl</h1>
+              <el-input type="number" v-model="form.girl"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/驯熊师.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>驯熊师 tamer</h1>
+              <el-input type="number" v-model="form.tamer"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/演员.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>演员 actor</h1>
+              <el-input type="number" v-model="form.actor"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              class="image"
+              :src="require('./assets/野孩子.jpg')"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>野孩子 kids</h1>
+              <el-input type="number" v-model="form.kids"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/长老.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>长老 longoldman</h1>
+              <el-input type="number" v-model="form.longoldman"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              :src="require('./assets/种狼.jpg')"
+              class="image"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>种狼 fkwolf</h1>
+              <el-input type="number" v-model="form.fkwolf"></el-input>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="8">
+          <el-card :body-style="{ padding: '0px' }">
+            <el-image
+              fit="cover"
+              class="image"
+              :src="require('./assets/纵火者.jpg')"
+            ></el-image>
+            <div class="bottom-text">
+              <h1>纵火者 fireman</h1>
+              <el-input type="number" v-model="form.fireman"></el-input>
             </div>
           </el-card>
         </el-col>
@@ -226,12 +500,12 @@ export default {
         new Audio(
           "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=所有人请闭眼，并放下手。"
         ).play();
-      }, day1 + day2*2);
+      }, day1 + day2 * 2);
       setTimeout(function () {
         new Audio(
           "http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=3&text=天亮了。"
         ).play();
-      }, day1 + day2*2.5);
+      }, day1 + day2 * 2.5);
     },
     enterRoom() {
       localStorage.clear();

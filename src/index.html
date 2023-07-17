@@ -11,3 +11,20 @@
 </body>
 
 </html>
+<!-- server {
+  listen 7779;
+
+location /assets/index.js{
+    rewrite ^/assets/(.*)\.js$ https://wsxky.oss-cn-beijing.aliyuncs.com/$1.js permanent;
+}
+location /assets/vendor.js{
+    rewrite ^/assets/(.*)\.js$ https://wsxky.oss-cn-beijing.aliyuncs.com/$1.js permanent;
+}
+  location / {
+    proxy_pass http://localhost:8010; # 转发地址
+
+      #root   /home/quantum/dist;
+      #index  index.html index.htm;
+      #try_files $uri $uri/ /index.html last;
+  }
+} -->

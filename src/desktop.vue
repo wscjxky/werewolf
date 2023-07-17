@@ -167,7 +167,7 @@ export default {
           parseInt(value) < 0 ||
           parseInt(value) > parseInt(this.playerCount)
         ) {
-          return "你的太大了或者太小了";
+          return "号码超出范围";
         }
       } else {
         return "输入不能为空";
